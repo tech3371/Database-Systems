@@ -1,0 +1,63 @@
+Adam Casey
+Lab 1 - Jan 24 2018
+
+UNIX commands
+1. mkdir cs3308
+2. mv cs3308 CSCI3308; mv CSCI\ 3308/Lab1.zip CSCI3308/
+3. ls -a CSCI3308/Lab1.zip; files in this directory = .  ..  little1.zip  little2.zip  Mystery  pictures  .secrets.txt  texts
+4. ls -1S CSCI3308/Lab1/pictures/ | head -1; largest file = Eyjafjallajokull_volcano_plume_2010_04_17.jpg
+5. mkdir bigData; cp CSCI3308/Lab1/pictures/Eyjafjallajokull_volcano_plume_2010_04_17.jpg bigData/; ls -1S CSCI3308/Lab1/texts/ | head -1
+largest file in "text" directory = dracula.txt; cp CSCI3308/Lab1/texts/dracula.txt bigData/
+	bytes in bigData: 8640; ls -lat Desktop/CSCI3308/Lab1/bigData
+6. zip -r bigData.zip bigData
+	bytes in bigData.zip : 8028
+	ls -lat Desktop/bigData.zip
+7. tar -cvf bigData.tar bigData
+8. rm -r bigData; rm -r bigData.zip 
+9. tar -xvf bigData.tar; x = extract, v = verbose, f = file to untar
+10. unzip CSCI3308/Lab1/little1.zip -d CSCI3308/Lab1; unzip CSCI3308/Lab1/little2.zip -d CSCI3308/Lab1; difference is that little2.zip has a "little" folder with same files as little1.zip 
+11. find . -name 'target.txt'; path from Lab1 directory = Lab1/Mystery/32/target.txt 
+	full path on my machine = find $PWD -type f -name target.txt ; /home/user/Desktop/CSCI3308/Lab1/Mystery/32/
+12. head -n 5 CSCI3308/Lab1/texts/dracula.txt | tail -n 5 CSCI3308/Lab1/texts/dubliners.txt 
+	new short story: 
+	This Web site includes information about Project Gutenberg-tm,
+	including how to make donations to the Project Gutenberg Literary
+	Archive Foundation, how to help produce our new eBooks, and how to
+	subscribe to our email newsletter to hear about new eBooks.
+	user@cu-cs-vm:~/Desktop$ head -n 5 CSCI3308/Lab1/texts/dracula.txt
+	The Project Gutenberg EBook of Dracula, by Bram Stoker
+
+	This eBook is for the use of anyone anywhere at no cost and with
+	almost no restrictions whatsoever.  You may copy it, give it away or
+	re-use it under the terms of the Project Gutenberg License included
+
+PASSWD File:
+1. cp /etc/passwd CSCI3308/Lab1/password_demo.txt
+2. cd CSCI3308/Lab1/
+
+Working with password_demo.txt file
+1. sort password_demo.txt -k1,1
+2. sort -t ':' -nk3,3 password_demo.txt
+3. sort -t ':' -nk4,4 -nk3,3 password_demo.txt 
+4. grep 'daemon' password_demo.txt 
+	output:
+	avahi-autoipd:x:110:119:Avahi autoip daemon,,,:/var/lib/avahi-autoipd:/bin/false
+	avahi:x:111:120:Avahi mDNS daemon,,,:/var/run/avahi-daemon:/bin/false
+	colord:x:112:123:colord colour management daemon,,,:/var/lib/colord:/bin/false
+	pulse:x:116:124:PulseAudio daemon,,,:/var/run/pulse:/bin/false
+	usbmux:x:119:46:usbmux daemon,,,:/var/lib/usbmux:/bin/false
+5. wc -l < password_demo.txt
+	number of lines: 41
+6. sort -t ':' -nk4,4 password_demo.txt | uniq -u
+7. sort -t ':' -nk4,4 password_demo.txt | uniq -u > tmp.txt
+8. touch getUniqueGID.sh
+	Bash Script:
+	1. vim getUniqueGID.sh:		
+		#!/bin/bash	
+		wc -l < password_demo.txt
+9. ./getUniqueGID.sh; bash: ./getUniqueGID.sh: Permission denied
+10. chmod +x getUNiqueGID.sh; yes, script ran after changing the permissions
+
+
+
+

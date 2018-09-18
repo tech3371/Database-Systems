@@ -1,0 +1,158 @@
+Adam Casey
+Lab 02 Commands - Jan 31, 2018
+
+Step 1:
+	1. cp ~/Downloads/Lab2.zip ~/Desktop/CSCI3308/
+	2. unzip Lab2.zip -d Lab2
+	3. cd Lab2
+
+Step 2:
+	1. diff fruits_v1.txt fruits_v2.txt 
+		11a12
+		> Cranberry
+		21d21
+		< Jackfruit
+		31a32
+		> Nectarine
+		40a42
+		> Prickly Pear
+
+	2. '>' = lines in file 1, '<' = lines in file 2
+	3. diff -c fruits_v1.txt fruits_v2.txt 
+		*** fruits_v1.txt	2017-09-05 13:51:42.000000000 -0600
+		--- fruits_v2.txt	2017-09-05 13:51:42.000000000 -0600
+		***************
+		*** 9,14 ****
+		--- 9,15 ----
+	        Camu Camu berry
+	        Cherries
+	        Coconut
+                + Cranberry
+	        Cucumber
+                Currents
+	        Dates
+                ***************
+   		*** 18,24 ****
+                Gooseberry
+  		Grapefruit
+	        Grapes
+		- Jackfruit
+		  Kiwi
+		  Kumquat
+		  Lemon
+		--- 19,24 ----
+		***************
+		*** 29,34 ****
+		--- 29,35 ----
+		  Mangosteen
+		  Melon
+		  Mulberry
+		+ Nectarine
+		  Orange
+		  Papaya
+		  Passion Fruit
+		***************
+		*** 38,43 ****
+		--- 39,45 ----
+		  Plum
+		  Pomegranate
+		  Pomelo 
+		+ Prickly Pear
+		  Prunes
+		  Raspberries
+		  Strawberries
+
+Step 3:
+	1. wc -l password_demo.txt
+		15 password_demo.txt
+	2. wc -m password_demo.txt
+		692 password_demo.txt
+Step 4:
+	1. cut -d ':' -f 1 password_demo.txt 
+		root
+		daemon
+		sys
+		games
+		mail
+		www-data
+		backup
+		nobody
+		syslog
+		whoopsie
+		user
+		sshd
+		ntp
+		mysql
+		vboxadd
+
+	2. cut -d ' ' -f 1,4 grades.txt
+		FN HW1
+		Ryan 1
+		Jephthah 1
+		Andreas 0
+		Godofredo 1
+		Edwin 0
+		Ahmad 0
+		Jett 1
+
+Step 5:
+	1. cut -d ':' -f 4 password_demo.txt | sort -n | uniq -u
+		0
+		3
+		5
+		999
+	2. -f 4 password_demo.txt | sort -n | uniq -u | >  ~/Desktop/CSCI3308/Lab2/myfile.txt
+	3. cut -d ':' -f 1,6 password_demo.txt | grep '^[mws]' 
+		s:/dev
+		mail:/var/mail
+		www-data:/var/www
+		syslog:/home/syslog
+		whoopsie:/nonexistent
+		sshd:/var/run/sshd
+		mysql:/nonexistent
+	
+Step 6: 
+	1. sed 's/[^0-9]*//g' cryptic.txt 
+		0434405370473704743171
+	2. sed 's/[0-9]*//g' cryptic.txt
+		yu cn ld  hr  wr bu yu cn' mk  drnk
+	3. sed 's/[0-9]/_/g' cryptic.txt
+		y_u c_n l__d _ h_r__ __ w___r bu_ y_u c_n'_ m_k_ __ dr_nk
+	4. ./bashscript.sh cryptic.txt
+		sed 's/[0]/o/g' cryptic.txt | sed 's/[4]/a/g' | sed 's/[3]/e/g' | sed 's/[5]/s/g' | sed 's/[7]/t/g'  | sed 's/[1]/i/g' 
+		you can lead a horse to water but you can't make it drink
+	5. ./bashscript.sh cryptic.txt; change the file to $1 so I can pass it in as a command line argument
+		sed 's/[0]/o/g' $1 | sed 's/[4]/a/g' | sed 's/[3]/e/g' | sed 's/[5]/s/g' | sed 's/[7]/t/g'  | sed 's/[1]/i/g' 
+		you can lead a horse to water but you can't make it drink
+
+Step 7:
+	1. awk '{for(i=1;i<=7;i++) s+=$i; print($1, $2, s/5); s=0}' grades.txt
+		FN LN 0
+		Ryan Slaven 0.8
+		Jephthah Eustathios 0.4
+		Andreas Saša 0.6
+		Godofredo Gerard 1
+		Edwin Babur 0.8
+		Ahmad Marin 0
+		Jett Marko 0.8
+
+
+	2. awk '{class+=$2; s=0} END {print("Class average: ", class/7)}' grades.txt
+		Class average:  0.714286
+
+Step 8:
+	1. grep '\(([0-9]\{3\})\|[0-9]\{3\}\)[ -]\?[0-9]\{3\}[ -]\?[0-9]\{4\}' regex_practice_data.txt
+	2. grep '\(([303]\{3\})\|[0-9]\{3\}\)[ -]\?[441]\{3\}[ -]\?[0-9]\{4\}' regex_practice_data.txt 
+	3. grep -c  ".com" regex_practice_data.txt 
+		17227
+	4. grep -c  ".gov" regex_practice_data.txt 
+		58
+
+
+
+
+
+
+
+
+

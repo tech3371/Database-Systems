@@ -1,0 +1,38 @@
+/* the css rules for boxes.html */
+/*#div1 {
+	float:left;
+	
+    border: 2px solid black;
+    height: 100px;
+    width: 100px;
+}
+
+#div2 {
+
+	float: left;
+
+    border: 2px solid black;
+    height: 100px;
+    width: 100px;
+}
+
+#div3 {
+
+	clear:left;
+    border: 2px solid black;
+    height: 100px;
+    width: 100px;
+}*/
+
+body {
+	margin: 0px;
+}
+
+div {
+
+    border: 2px solid black;
+    height: 100px;
+    width: 100px;
+}
+
+

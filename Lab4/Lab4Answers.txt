@@ -1,0 +1,55 @@
+1. background-color: green
+	div1 {
+		background-color: green;
+	}
+
+2. margin: 10px; padding: 10px
+	changing the margins spaces the boxes out
+	changing the padding makes the boxex larger/smaller
+
+3. the number '1' is no longer in the box
+	the box that holds '1' is twice as large as the div1 box
+
+4. overflow:scroll
+	this allows me to scroll to all parts of the square like on a webpage
+   overflow:hidden
+	this takes all the excess and hides it behind the original box
+
+5. float:left = 1,2,3
+   float:right = 3,2,1
+
+6. float:left
+   clear:right
+	when I do each div individually with float:left and clear:right,
+	the specific box I'm changing shifts to the left side of the page
+	while the other 2 remain on the right side
+
+7. 	#div1 {
+	    float:left;
+	    border: 2px solid black;
+	    height: 100px;
+	    width: 100px;
+	}
+
+	#div2 {
+	    float: left;
+	    border: 2px solid black;
+	    height: 100px;
+	    width: 100px;
+	}
+
+	#div3 {
+	    clear:left;
+	    border: 2px solid black;
+	    height: 100px;
+	    width: 100px;
+	}
+
+8. margin: 0px; this pushes all the boxes to the left vertically and takes away any whitespace on their left-side
+	and the browswer window.
+
+
+
+
+
+

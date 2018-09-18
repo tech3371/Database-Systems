@@ -1,0 +1,34 @@
+/*5th change is in my menu.html file and it is the addition of the "My menu"
+at the top. You're awesome!!!!!!!!
+*/
+
+#something {
+	border: 5px blue;
+    height: 500px;
+    width: 20%;
+    float: left;
+    position: fixed;
+}
+
+.menuItem{
+	border-style: ridge;
+	padding: 10px;
+	text-align: center; /*Change number 4*/
+	border: 20px solid black;
+	margin-top: 5px;
+	margin-right: 5px;
+	margin-bottom: 5px;
+	background-color: green; /*	Change number 1*/
+}
+
+#sections {
+	background-color: orange; /*Change number 3*/
+	border: 5px blue;
+	width: 75%;
+	float: right;
+}
+
+.info{
+	border: 5px red;
+	font-style: italic;/*Change number 2*/
+}

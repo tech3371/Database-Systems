@@ -1,0 +1,29 @@
+<!-- Adam Casey - Lab 7 - REST Web Services -->
+
+<!DOCTYPE html>
+
+<html>
+<head>
+ <title>Adam Casey - Lab7</title>
+ <script src="http://code.jquery.com/jquery-2.2.0.js"></script>
+ <script>
+ 	$(document).ready(function() {
+ 		var url = 
+ 		'https://api.forecast.io/forecast/4a36017ef4b90ad029be23cc3fcec42c/40.014984,-105.270546'
+			$.ajax({url:url, dataType:"jsonp"}).then(function(data) {console.log(data)
+			$('#temperature').text(data.currently.temperature)
+			$('#summary').text(data.currently.summary)
+			$('#humidity').text(data.currently.humidity)
+		})
+ 	})
+ </script>
+</head>
+<body>
+ <p>Temperature</p>
+ <p id="temperature">original</p>
+ <p>Summary</p>
+ <p id="summary">original</p>
+ <p>Humidity</p>
+ <p id="humidity">original</p>
+</body>
+</html>

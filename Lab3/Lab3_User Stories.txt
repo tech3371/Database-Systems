@@ -1,0 +1,32 @@
+Scrum Master: Adam Casey
+Blaise Page
+Justin Yun
+Garrison Lee
+Parker Eischen
+
+
+User Stories:
+1. As a user I want a price check gurantee (match lowest price) --- 1
+
+2. As a engineer I want an easier way to collect data to know what products to buy --- 7
+
+3. As a business owner some I want some sort of streamlined process for adding products to your site (Amazon has unreasonably 
+high standards for vendors to sell) --- 5
+
+4. As a user I want to have a trial period before actually buying an item --- 2
+
+5. As a user I want within the hour shipping  --- 10
+
+Explanations:
+
+1. 3rd party sites can easily be incorporated.
+
+2. Amazon is most likely very private with their data. Also, it would take a large amount of time to gather data
+from users as well as mining that data.
+
+3. Multi-step process of verfications that is very time/energy consuming.
+
+4. Can possibly try products at a physical retail store and have finite amount of time.
+
+5. Logistical nightname and incredibly demanding. Would require a fleet of drones and depending on where you're located,
+it could take too long to reach the address.
