@@ -48,6 +48,14 @@ Cars” product line with a QuantityInStock between 5000 and 7000. (7)
 5. What is the ProductName and Profit of the product that has the highest profit (profit = MSRP minus
 BuyPrice). (1)
 
+mysql> SELECT productName, (MSRP-BuyPrice) AS Profit FROM classicmodels.products ORDER BY Profit DESC LIMIT 1;
+
++--------------------------+--------+
+| productName              | Profit |
++--------------------------+--------+
+| 1952 Alpine Renault 1300 | 115.72 |
++--------------------------+--------+
+1 row in set (0.00 sec)
 
 
 6. List the country and the number of customers from that country for all countries having five or more
@@ -56,7 +64,14 @@ customers. List the countries sorted in descending order from highest to lowest 
 
 7. List the ProductCode, ProductName, and number of orders for the product with the most orders. (1)
 
+mysql> select products.productCode, productName,COUNT(orderdetails.productCode) AS numberOrders FROM classicmodels.products INNER JOIN classicmodels.orderdetails ON classicmodels.orderdetails.productCode = classicmodels.products.productCode GROUP BY productCode ORDER BY numberOrders DESC LIMIT 1;
 
++-------------+-----------------------------+--------------+
+| productCode | productName                 | numberOrders |
++-------------+-----------------------------+--------------+
+| S18_3232    | 1992 Ferrari 360 Spider red |           53 |
++-------------+-----------------------------+--------------+
+1 row in set (0.01 sec)
 
 8. List the EmployeeNumber, Firstname + Lastname (concatenated into one column in the answer set,
 separated by a blank) for all the employees reporting to Anthony Bow. (6)
@@ -78,6 +93,16 @@ with no boss.) (1)
 
 11. List the month name and the total number of orders for the month in 2003 in which ClassicModels
 customers placed the most orders. (1)
+
+mysql> select DATE_FORMAT(orderDate, '%M') as monthOrdered, COUNT(orderDate) AS total FROM classicmodels.orders WHERE DATE_FORMAT(orderDate, '%Y')='2003' GROUP BY monthOrdered ORDER BY total DESC LIMIT 1;
+
++--------------+-------+
+| monthOrdered | total |
++--------------+-------+
+| November     |    30 |
++--------------+-------+
+1 row in set (0.00 sec)
+
 
 12. List the firstname, lastname of employees who are Sales Reps who have no assigned customers. (2)
 
