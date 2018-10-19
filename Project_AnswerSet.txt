@@ -108,6 +108,17 @@ mysql> select DATE_FORMAT(orderDate, '%M') as monthOrdered, COUNT(orderDate) AS 
 
 13. List the customername of customers from Spain with no orders. (2)
 
+mysql> select customername, count(ordernumber) from customers c left outer join orders o on o.customernumber=c.customernumber where COUNTRY='SPAIN' and o.customernumber is NULL GROUP BY customername, o.customernumber;
+
++---------------------+--------------------+
+| customername        | count(ordernumber) |
++---------------------+--------------------+
+| ANG Resellers       |                  0 |
+| Anton Designs, Ltd. |                  0 |
++---------------------+--------------------+
+2 rows in set (0.00 sec)
+
+
 14. List the customername and total quantity of products ordered for customers who have ordered
 more than 2000 products across all their orders. (2)
 
