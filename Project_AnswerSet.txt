@@ -127,11 +127,15 @@ ContactDate (DATE) and OrderTotal (a decimal number with 9 digits in total havin
 None of these columns can be NULL. Include a PRIMARY KEY constraint named “TopCustomer_PK” on
 CustomerNumber. (no answer set)
 
+mysql> CREATE TABLE TopCustomers (CustomerNumber INT NOT NULL, ContactDate DATE NOT NULL, OrderTotal DECIMAL(9,2) NOT NULL, CONSTRAINT TopCustomer_PK PRIMARY KEY (CustomerNumber));
+
 16. Populate the new table “TopCustomers” with the CustomerNumber, today’s date, and the total
 value of all their orders (PriceEach * quantityOrdered) for those customers whose order total value is
 greater than $150,000. (inserted 7 rows, no answer set)
 
 17. List the contents of the TopCustomers table in descending OrderTotal sequence. (7)
+
+mysql> select * from TopCustomers ORDER BY DESC;
 
 18. Add a new column to the TopCustomers table called OrderCount (integer). (No answer set)
 
@@ -141,3 +145,5 @@ greater than $150,000. (inserted 7 rows, no answer set)
 20. List the contents of the TopCustomers table in descending OrderCount sequence. (7)
 
 21. Drop the TopCustomers table. (no answer set)
+
+mysql> drop table TopCustomers;
