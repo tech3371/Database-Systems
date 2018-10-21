@@ -1,2 +1,149 @@
-# Adam Casey & Tenzin Choedon
+# Adam Casey (odd) & Tenzin Choedon (even)
 # Project 1, CSCI 3287
+
+1. List all the information in the Offices table. (7)
+
+	mysql> SELECT * FROM offices;
+
++------------+---------------+------------------+--------------------------+--------------+------------+-----------+------------+-----------+
+| officeCode | city          | phone            | addressLine1             | addressLine2 | state      | country   | postalCode | territory |
++------------+---------------+------------------+--------------------------+--------------+------------+-----------+------------+-----------+
+| 1          | San Francisco | +1 650 219 4782  | 100 Market Street        | Suite 300    | CA         | USA       | 94080      | NA        |
+| 2          | Boston        | +1 215 837 0825  | 1550 Court Place         | Suite 102    | MA         | USA       | 02107      | NA        |
+| 3          | NYC           | +1 212 555 3000  | 523 East 53rd Street     | apt. 5A      | NY         | USA       | 10022      | NA        |
+| 4          | Paris         | +33 14 723 4404  | 43 Rue Jouffroy D'abbans | NULL         | NULL       | France    | 75017      | EMEA      |
+| 5          | Tokyo         | +81 33 224 5000  | 4-1 Kioicho              | NULL         | Chiyoda-Ku | Japan     | 102-8578   | Japan     |
+| 6          | Sydney        | +61 2 9264 2451  | 5-11 Wentworth Avenue    | Floor #2     | NULL       | Australia | NSW 2010   | APAC      |
+| 7          | London        | +44 20 7877 2041 | 25 Old Broad Street      | Level 7      | NULL       | UK        | EC2N 1HN   | EMEA      |
++------------+---------------+------------------+--------------------------+--------------+------------+-----------+------------+-----------+
+7 rows in set (0.00 sec)
+
+
+2. List the EmployeeNumber, LastName, FirstName, Extension for all employees working out of the
+Paris, France office. (5)
+
+3. List the ProductCode, ProductName, ProductVendor, QuantityInStock for all products in the “Classic
+Cars” product line with a QuantityInStock between 5000 and 7000. (7)
+
+	mysql> select ProductCode, ProductName, ProductVendor, BuyPrice, MSRP FROM products WHERE productLine LIKE '%Classic Cars%' and QuantityInStock > 5000 and QuantityInStock < 7000;
+
++-------------+-----------------------------------+---------------------------+----------+--------+
+| ProductCode | ProductName                       | ProductVendor             | BuyPrice | MSRP   |
++-------------+-----------------------------------+---------------------------+----------+--------+
+| S10_4962    | 1962 LanciaA Delta 16V            | Second Gear Diecast       |   103.42 | 147.74 |
+| S12_3148    | 1969 Corvair Monza                | Welly Diecast Productions |    89.14 | 151.08 |
+| S12_3990    | 1970 Plymouth Hemi Cuda           | Studio M Art Models       |    31.92 |  79.80 |
+| S18_4027    | 1970 Triumph Spitfire             | Min Lin Diecast           |    91.92 | 143.62 |
+| S24_3856    | 1956 Porsche 356A Coupe           | Classic Metal Creations   |    98.30 | 140.43 |
+| S24_4048    | 1992 Porsche Cayenne Turbo Silver | Exoto Designs             |    69.78 | 118.28 |
+| S700_2824   | 1982 Camaro Z28                   | Carousel DieCast Legends  |    46.53 | 101.15 |
++-------------+-----------------------------------+---------------------------+----------+--------+
+7 rows in set (0.00 sec)
+
+
+4. List the ProductCode, ProductName, ProductVendor, BuyPrice and MSRP for the least expensive
+(lowest MSRP) product sold by ClassicModels. (“MSRP” is the Manufacturer’s Suggested Retail Price.)
+(1)
+
+5. What is the ProductName and Profit of the product that has the highest profit (profit = MSRP minus
+BuyPrice). (1)
+
+mysql> SELECT productName, (MSRP-BuyPrice) AS Profit FROM classicmodels.products ORDER BY Profit DESC LIMIT 1;
+
++--------------------------+--------+
+| productName              | Profit |
++--------------------------+--------+
+| 1952 Alpine Renault 1300 | 115.72 |
++--------------------------+--------+
+1 row in set (0.00 sec)
+
+
+6. List the country and the number of customers from that country for all countries having five or more
+customers. List the countries sorted in descending order from highest to lowest number of customers.
+(6)
+
+7. List the ProductCode, ProductName, and number of orders for the product with the most orders. (1)
+
+mysql> select products.productCode, productName,COUNT(orderdetails.productCode) AS numberOrders FROM classicmodels.products INNER JOIN classicmodels.orderdetails ON classicmodels.orderdetails.productCode = classicmodels.products.productCode GROUP BY productCode ORDER BY numberOrders DESC LIMIT 1;
+
++-------------+-----------------------------+--------------+
+| productCode | productName                 | numberOrders |
++-------------+-----------------------------+--------------+
+| S18_3232    | 1992 Ferrari 360 Spider red |           53 |
++-------------+-----------------------------+--------------+
+1 row in set (0.01 sec)
+
+8. List the EmployeeNumber, Firstname + Lastname (concatenated into one column in the answer set,
+separated by a blank) for all the employees reporting to Anthony Bow. (6)
+
+9. List the EmployeeNumber, LastName, FirstName of the president of the company (the one employee
+with no boss.) (1)
+
+	mysql> select EmployeeNumber, LastName, FirstName FROM employees WHERE reportsTo is NULL;
+
++----------------+----------+-----------+
+| EmployeeNumber | LastName | FirstName |
++----------------+----------+-----------+
+|           1002 | Murphy   | Diane     |
++----------------+----------+-----------+
+1 row in set (0.00 sec)
+
+
+10. List the ProductName for all products in the “Classic Cars” product line from the 1950’s. (6)
+
+11. List the month name and the total number of orders for the month in 2003 in which ClassicModels
+customers placed the most orders. (1)
+
+mysql> select DATE_FORMAT(orderDate, '%M') as monthOrdered, COUNT(orderDate) AS total FROM classicmodels.orders WHERE DATE_FORMAT(orderDate, '%Y')='2003' GROUP BY monthOrdered ORDER BY total DESC LIMIT 1;
+
++--------------+-------+
+| monthOrdered | total |
++--------------+-------+
+| November     |    30 |
++--------------+-------+
+1 row in set (0.00 sec)
+
+
+12. List the firstname, lastname of employees who are Sales Reps who have no assigned customers. (2)
+
+13. List the customername of customers from Spain with no orders. (2)
+
+mysql> select customername, count(ordernumber) from customers c left outer join orders o on o.customernumber=c.customernumber where COUNTRY='SPAIN' and o.customernumber is NULL GROUP BY customername, o.customernumber;
+
++---------------------+--------------------+
+| customername        | count(ordernumber) |
++---------------------+--------------------+
+| ANG Resellers       |                  0 |
+| Anton Designs, Ltd. |                  0 |
++---------------------+--------------------+
+2 rows in set (0.00 sec)
+
+
+14. List the customername and total quantity of products ordered for customers who have ordered
+more than 2000 products across all their orders. (2)
+
+15. Create a NEW table named “TopCustomers” with three columns: CustomerNumber (integer),
+ContactDate (DATE) and OrderTotal (a decimal number with 9 digits in total having two decimal places).
+None of these columns can be NULL. Include a PRIMARY KEY constraint named “TopCustomer_PK” on
+CustomerNumber. (no answer set)
+
+mysql> CREATE TABLE TopCustomers (CustomerNumber INT NOT NULL, ContactDate DATE NOT NULL, OrderTotal DECIMAL(9,2) NOT NULL, CONSTRAINT TopCustomer_PK PRIMARY KEY (CustomerNumber));
+
+16. Populate the new table “TopCustomers” with the CustomerNumber, today’s date, and the total
+value of all their orders (PriceEach * quantityOrdered) for those customers whose order total value is
+greater than $150,000. (inserted 7 rows, no answer set)
+
+17. List the contents of the TopCustomers table in descending OrderTotal sequence. (7)
+
+mysql> select * from TopCustomers ORDER BY DESC;
+
+18. Add a new column to the TopCustomers table called OrderCount (integer). (No answer set)
+
+19. Update the Top Customers table, setting the OrderCount column to a random number (from 0 to
+20). (Should update 7 rows) HINT: use the RAND() and FLOOR() functions.
+
+20. List the contents of the TopCustomers table in descending OrderCount sequence. (7)
+
+21. Drop the TopCustomers table. (no answer set)
+
+mysql> drop table TopCustomers;
