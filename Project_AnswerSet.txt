@@ -22,6 +22,19 @@
 2. List the EmployeeNumber, LastName, FirstName, Extension for all employees working out of the
 Paris, France office. (5)
 
+	mysql> select employeeNumber, lastName,firstName, extension,officeCode  
+    from employees where officeCode = 4;
++----------------+-----------+-----------+-----------+------------+
+| employeeNumber | lastName  | firstName | extension | officeCode |
++----------------+-----------+-----------+-----------+------------+
+|           1102 | Bondur    | Gerard    | x5408     | 4          |
+|           1337 | Bondur    | Loui      | x6493     | 4          |
+|           1370 | Hernandez | Gerard    | x2028     | 4          |
+|           1401 | Castillo  | Pamela    | x2759     | 4          |
+|           1702 | Gerard    | Martin    | x2312     | 4          |
++----------------+-----------+-----------+-----------+------------+
+5 rows in set (0.00 sec)
+
 3. List the ProductCode, ProductName, ProductVendor, QuantityInStock for all products in the “Classic
 Cars” product line with a QuantityInStock between 5000 and 7000. (7)
 
@@ -45,10 +58,19 @@ Cars” product line with a QuantityInStock between 5000 and 7000. (7)
 (lowest MSRP) product sold by ClassicModels. (“MSRP” is the Manufacturer’s Suggested Retail Price.)
 (1)
 
+	mysql> select  productCode,productName,productVendor, buyPrice, MSRP 
+    from products where msrp=(select min(MSRP) from products);
++-------------+-----------------------------+-------------------------+----------+-------+
+| productCode | productName                 | productVendor           | buyPrice | MSRP  |
++-------------+-----------------------------+-------------------------+----------+-------+
+| S24_1937    | 1939 Chevrolet Deluxe Coupe | Motor City Art Classics |    22.57 | 33.19 |
++-------------+-----------------------------+-------------------------+----------+-------+
+1 row in set (0.01 sec)
+
 5. What is the ProductName and Profit of the product that has the highest profit (profit = MSRP minus
 BuyPrice). (1)
 
-mysql> SELECT productName, (MSRP-BuyPrice) AS Profit FROM classicmodels.products ORDER BY Profit DESC LIMIT 1;
+	mysql> SELECT productName, (MSRP-BuyPrice) AS Profit FROM classicmodels.products ORDER BY Profit DESC LIMIT 1;
 
 +--------------------------+--------+
 | productName              | Profit |
@@ -62,9 +84,23 @@ mysql> SELECT productName, (MSRP-BuyPrice) AS Profit FROM classicmodels.products
 customers. List the countries sorted in descending order from highest to lowest number of customers.
 (6)
 
+	mysql> select country, count(customerNumber) as num 
+    from customers group by country having num >= 5 order by 2 desc;
++-----------+-----+
+| country   | num |
++-----------+-----+
+| USA       |  36 |
+| Germany   |  13 |
+| France    |  12 |
+| Spain     |   7 |
+| UK        |   5 |
+| Australia |   5 |
++-----------+-----+
+6 rows in set (0.01 sec)
+
 7. List the ProductCode, ProductName, and number of orders for the product with the most orders. (1)
 
-mysql> select products.productCode, productName,COUNT(orderdetails.productCode) AS numberOrders FROM classicmodels.products INNER JOIN classicmodels.orderdetails ON classicmodels.orderdetails.productCode = classicmodels.products.productCode GROUP BY productCode ORDER BY numberOrders DESC LIMIT 1;
+	mysql> select products.productCode, productName,COUNT(orderdetails.productCode) AS numberOrders FROM classicmodels.products INNER JOIN classicmodels.orderdetails ON classicmodels.orderdetails.productCode = classicmodels.products.productCode GROUP BY productCode ORDER BY numberOrders DESC LIMIT 1;
 
 +-------------+-----------------------------+--------------+
 | productCode | productName                 | numberOrders |
@@ -75,6 +111,20 @@ mysql> select products.productCode, productName,COUNT(orderdetails.productCode) 
 
 8. List the EmployeeNumber, Firstname + Lastname (concatenated into one column in the answer set,
 separated by a blank) for all the employees reporting to Anthony Bow. (6)
+
+	mysql> select employeeNumber, concat(lastName,', ', firstName) as "Employees that report to Anthony Bow" 
+    from employees where reportsTo = 1143;
++----------------+--------------------------------------+
+| employeeNumber | Employees that report to Anthony Bow |
++----------------+--------------------------------------+
+|           1165 | Jennings, Leslie                     |
+|           1166 | Thompson, Leslie                     |
+|           1188 | Firrelli, Julie                      |
+|           1216 | Patterson, Steve                     |
+|           1286 | Tseng, Foon Yue                      |
+|           1323 | Vanauf, George                       |
++----------------+--------------------------------------+
+6 rows in set (0.00 sec)
 
 9. List the EmployeeNumber, LastName, FirstName of the president of the company (the one employee
 with no boss.) (1)
@@ -91,10 +141,12 @@ with no boss.) (1)
 
 10. List the ProductName for all products in the “Classic Cars” product line from the 1950’s. (6)
 
+	mysql>
+
 11. List the month name and the total number of orders for the month in 2003 in which ClassicModels
 customers placed the most orders. (1)
 
-mysql> select DATE_FORMAT(orderDate, '%M') as monthOrdered, COUNT(orderDate) AS total FROM classicmodels.orders WHERE DATE_FORMAT(orderDate, '%Y')='2003' GROUP BY monthOrdered ORDER BY total DESC LIMIT 1;
+	mysql> select DATE_FORMAT(orderDate, '%M') as monthOrdered, COUNT(orderDate) AS total FROM classicmodels.orders WHERE DATE_FORMAT(orderDate, '%Y')='2003' GROUP BY monthOrdered ORDER BY total DESC LIMIT 1;
 
 +--------------+-------+
 | monthOrdered | total |
@@ -106,9 +158,11 @@ mysql> select DATE_FORMAT(orderDate, '%M') as monthOrdered, COUNT(orderDate) AS 
 
 12. List the firstname, lastname of employees who are Sales Reps who have no assigned customers. (2)
 
+	mysql>
+
 13. List the customername of customers from Spain with no orders. (2)
 
-mysql> select customername, count(ordernumber) from customers c left outer join orders o on o.customernumber=c.customernumber where COUNTRY='SPAIN' and o.customernumber is NULL GROUP BY customername, o.customernumber;
+	mysql> select customername, count(ordernumber) from customers c left outer join orders o on o.customernumber=c.customernumber where COUNTRY='SPAIN' and o.customernumber is NULL GROUP BY customername, o.customernumber;
 
 +---------------------+--------------------+
 | customername        | count(ordernumber) |
@@ -122,28 +176,74 @@ mysql> select customername, count(ordernumber) from customers c left outer join 
 14. List the customername and total quantity of products ordered for customers who have ordered
 more than 2000 products across all their orders. (2)
 
+	mysql> select customername, sum(quantityordered) as totalq 
+    from customers c, orderdetails d, orders o where c.customernumber = o.customernumber and o.ordernumber = d.ordernumber 	
+    group by customername having totalq > 2000;
+
++------------------------------+--------+
+| customername                 | totalq |
++------------------------------+--------+
+| Euro+ Shopping Channel       |   9327 |
+| Mini Gifts Distributors Ltd. |   6366 |
++------------------------------+--------+
+2 rows in set (0.01 sec)
+
 15. Create a NEW table named “TopCustomers” with three columns: CustomerNumber (integer),
 ContactDate (DATE) and OrderTotal (a decimal number with 9 digits in total having two decimal places).
 None of these columns can be NULL. Include a PRIMARY KEY constraint named “TopCustomer_PK” on
 CustomerNumber. (no answer set)
 
-mysql> CREATE TABLE TopCustomers (CustomerNumber INT NOT NULL, ContactDate DATE NOT NULL, OrderTotal DECIMAL(9,2) NOT NULL, CONSTRAINT TopCustomer_PK PRIMARY KEY (CustomerNumber));
+	mysql> CREATE TABLE TopCustomers (CustomerNumber INT NOT NULL, ContactDate DATE NOT NULL, OrderTotal DECIMAL(9,2) NOT NULL, CONSTRAINT TopCustomer_PK PRIMARY KEY (CustomerNumber));
 
 16. Populate the new table “TopCustomers” with the CustomerNumber, today’s date, and the total
 value of all their orders (PriceEach * quantityOrdered) for those customers whose order total value is
 greater than $150,000. (inserted 7 rows, no answer set)
 
+	mysql> insert into TopCustomers ( customerNumber , contactDate,orderTotal) 
+    select customerNumber,'2018/10/20', sum(quantityOrdered * priceEach) as totalPrice 
+    from orderDetails d, orders o where d.orderNumber = o.orderNumber 
+    group by customerNumber having totalPrice > 150000;
++----------------+-------------+------------+
+| customerNumber | contactDate | orderTotal |
++----------------+-------------+------------+
+|            114 | 2018-10-20  |  180585.07 |
+|            119 | 2018-10-20  |  158573.12 |
+|            124 | 2018-10-20  |  591827.34 |
+|            141 | 2018-10-20  |  820689.54 |
+|            148 | 2018-10-20  |  156251.03 |
+|            151 | 2018-10-20  |  177913.95 |
+|            323 | 2018-10-20  |  154622.08 |
++----------------+-------------+------------+
+
 17. List the contents of the TopCustomers table in descending OrderTotal sequence. (7)
 
-mysql> select * from TopCustomers ORDER BY DESC;
+	mysql> select * from TopCustomers ORDER BY DESC;
 
 18. Add a new column to the TopCustomers table called OrderCount (integer). (No answer set)
+	
+	mysql> alter table TopCustomers add OrderCount int;
++----------------+-------------+------------+------------+
+| customerNumber | contactDate | orderTotal | OrderCount |
++----------------+-------------+------------+------------+
+|            114 | 2018-10-20  |  180585.07 |       NULL |
+|            119 | 2018-10-20  |  158573.12 |       NULL |
+|            124 | 2018-10-20  |  591827.34 |       NULL |
+|            141 | 2018-10-20  |  820689.54 |       NULL |
+|            148 | 2018-10-20  |  156251.03 |       NULL |
+|            151 | 2018-10-20  |  177913.95 |       NULL |
+|            323 | 2018-10-20  |  154622.08 |       NULL |
++----------------+-------------+------------+------------+
+7 rows in set (0.00 sec)
 
 19. Update the Top Customers table, setting the OrderCount column to a random number (from 0 to
 20). (Should update 7 rows) HINT: use the RAND() and FLOOR() functions.
 
+	mysql>
+
 20. List the contents of the TopCustomers table in descending OrderCount sequence. (7)
+
+	mysql>
 
 21. Drop the TopCustomers table. (no answer set)
 
-mysql> drop table TopCustomers;
+	mysql> drop table TopCustomers;
