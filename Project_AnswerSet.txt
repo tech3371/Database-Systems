@@ -38,7 +38,8 @@ Paris, France office. (5)
 3. List the ProductCode, ProductName, ProductVendor, QuantityInStock for all products in the “Classic
 Cars” product line with a QuantityInStock between 5000 and 7000. (7)
 
-	mysql> select ProductCode, ProductName, ProductVendor, BuyPrice, MSRP FROM products WHERE productLine LIKE '%Classic Cars%' and QuantityInStock > 5000 and QuantityInStock < 7000;
+	mysql> select ProductCode, ProductName, ProductVendor, BuyPrice, MSRP 
+	FROM products WHERE productLine LIKE '%Classic Cars%' and QuantityInStock > 5000 and QuantityInStock < 7000;
 
 +-------------+-----------------------------------+---------------------------+----------+--------+
 | ProductCode | ProductName                       | ProductVendor             | BuyPrice | MSRP   |
@@ -141,7 +142,33 @@ with no boss.) (1)
 
 10. List the ProductName for all products in the “Classic Cars” product line from the 1950’s. (6)
 
-	mysql>
+	mysql>create table car(
+	caryear int,
+    	productCode varchar(8)
+    
+	);
+
+	#add year value
+	insert into car(carYear,productCode)
+	select substring_index(productName,' ',1) ,productCode from products 
+	where productLine = 'Classic Cars';
+
+	#select only 1950's classic car
+	select p.productName ,caryear 
+	from products p, car c where (c.productCode = p.productCode) 
+	group by p.productName having (caryear > '1950' and caryear <'1960');
+
++-------------------------------------+---------+
+| productName                         | caryear |
++-------------------------------------+---------+
+| 1952 Alpine Renault 1300            |    1952 |
+| 1952 Citroen-15CV                   |    1952 |
+| 1956 Porsche 356A Coupe             |    1956 |
+| 1957 Corvette Convertible           |    1957 |
+| 1957 Ford Thunderbird               |    1957 |
+| 1958 Chevy Corvette Limited Edition |    1958 |
++-------------------------------------+---------+
+6 rows in set (0.00 sec)
 
 11. List the month name and the total number of orders for the month in 2003 in which ClassicModels
 customers placed the most orders. (1)
@@ -158,7 +185,20 @@ customers placed the most orders. (1)
 
 12. List the firstname, lastname of employees who are Sales Reps who have no assigned customers. (2)
 
-	mysql>
+	mysql>select firstName, lastName,jobtitle, employeeNumber       
+	     from employees e where employeeNumber not in      
+	     (select salesRepEmployeeNumber      
+	     from customers c      
+	     where c.salesRepEmployeeNumber = e.employeeNumber)and jobtitle="Sales Rep";
+     
++-----------+----------+-----------+----------------+
+| firstName | lastName | jobtitle  | employeeNumber |
++-----------+----------+-----------+----------------+
+| Tom       | King     | Sales Rep |           1619 |
+| Yoshimi   | Kato     | Sales Rep |           1625 |
++-----------+----------+-----------+----------------+
+2 rows in set (0.00 sec)
+
 
 13. List the customername of customers from Spain with no orders. (2)
 
@@ -235,14 +275,37 @@ greater than $150,000. (inserted 7 rows, no answer set)
 +----------------+-------------+------------+------------+
 7 rows in set (0.00 sec)
 
-19. Update the Top Customers table, setting the OrderCount column to a random number (from 0 to
-20). (Should update 7 rows) HINT: use the RAND() and FLOOR() functions.
+19. Update the Top Customers table, setting the OrderCount column to a random number (from 0 to 20). (Should update 7 rows) HINT: use the RAND() and FLOOR() functions.
 
-	mysql>
+	mysql>update TopCustomers set OrderCount=(round((rand()*19),0)) where OrderCount is null;
++----------------+-------------+------------+------------+
+| customerNumber | contactDate | orderTotal | OrderCount |
++----------------+-------------+------------+------------+
+|            114 | 2018-10-20  |  180585.07 |          6 |
+|            119 | 2018-10-20  |  158573.12 |          2 |
+|            124 | 2018-10-20  |  591827.34 |         13 |
+|            141 | 2018-10-20  |  820689.54 |         18 |
+|            148 | 2018-10-20  |  156251.03 |         14 |
+|            151 | 2018-10-20  |  177913.95 |         16 |
+|            323 | 2018-10-20  |  154622.08 |         18 |
++----------------+-------------+------------+------------+
+7 rows in set (0.00 sec)
 
 20. List the contents of the TopCustomers table in descending OrderCount sequence. (7)
 
-	mysql>
+	mysql>select * from TopCustomers order by OrderCount desc;
++----------------+-------------+------------+------------+
+| customerNumber | contactDate | orderTotal | OrderCount |
++----------------+-------------+------------+------------+
+|            141 | 2018-10-20  |  820689.54 |         18 |
+|            323 | 2018-10-20  |  154622.08 |         18 |
+|            151 | 2018-10-20  |  177913.95 |         16 |
+|            148 | 2018-10-20  |  156251.03 |         14 |
+|            124 | 2018-10-20  |  591827.34 |         13 |
+|            114 | 2018-10-20  |  180585.07 |          6 |
+|            119 | 2018-10-20  |  158573.12 |          2 |
++----------------+-------------+------------+------------+
+7 rows in set (0.01 sec)
 
 21. Drop the TopCustomers table. (no answer set)
 
